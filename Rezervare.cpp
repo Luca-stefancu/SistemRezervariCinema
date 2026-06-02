@@ -22,7 +22,16 @@ void Rezervare::setStatus(string status) { this->status = status; }
 void Rezervare::setNrLocuri(int nrLocuri) { this->nrLocuri = nrLocuri; }
 
 float Rezervare::calculeazaTotal() const {
-    return nrLocuri * spectacol->getPret();
+    float total = nrLocuri * spectacol->getPret();
+    string tip = client->getTipClient();
+    float reducere = 0;
+
+    if (tip == "Student") reducere = 0.20;
+    else if (tip == "Pensionar") reducere = 0.30;
+    else if (tip == "Membru fidel") reducere = 0.10;
+
+    total = total - (total * reducere);
+    return total;
 }
 
 void Rezervare::confirma() {
@@ -36,12 +45,27 @@ void Rezervare::anuleaza() {
 }
 
 void Rezervare::afisare() const {
+    string tip = client->getTipClient();
+    float totalFaraReducere = nrLocuri * spectacol->getPret();
+    float totalCuReducere = calculeazaTotal();
+
     cout << "=== Rezervare ID: " << id << " ===" << endl;
     cout << "Client: " << client->getNume() << " " << client->getPrenume() << endl;
+    cout << "Tip client: " << tip << endl;
     cout << "Film: " << spectacol->getFilm()->getTitlu() << endl;
     cout << "Data spectacol: " << spectacol->getData() << " ora " << spectacol->getOra() << endl;
     cout << "Nr. locuri: " << nrLocuri << endl;
-    cout << "Total: " << calculeazaTotal() << " RON" << endl;
+    cout << "Pret fara reducere: " << totalFaraReducere << " RON" << endl;
+
+    if (tip != "Normal") {
+        float reducere = 0;
+        if (tip == "Student") reducere = 20;
+        else if (tip == "Pensionar") reducere = 30;
+        else if (tip == "Membru fidel") reducere = 10;
+        cout << "Reducere aplicata: " << reducere << "%" << endl;
+    }
+
+    cout << "Total de plata: " << totalCuReducere << " RON" << endl;
     cout << "Status: " << status << endl;
     cout << "Data rezervare: " << dataRezervare << endl;
 }
