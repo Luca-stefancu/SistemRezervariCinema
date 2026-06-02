@@ -2,6 +2,7 @@
 #include <string>
 #include "Film.h"
 #include "Sala.h"
+#include <vector>
 using namespace std;
 
 class Spectacol {
@@ -12,6 +13,7 @@ private:
     string data;   // ex: "2024-01-15"
     string ora;    // ex: "18:30"
     float pret;
+    vector<bool> locuriOcupate;
 
 public:
     // Constructor
@@ -32,4 +34,11 @@ public:
 
     // Afisare
     void afisare() const;
+    // Locuri
+    void initializeazaLocuri();
+    bool esteLocLiber(int index) const;
+    void ocupaLoc(int index);
+    void elibereazaLoc(int index);
+    vector<bool>& getLocuriOcupate();
+    int getLocuriLibere() const;
 };
