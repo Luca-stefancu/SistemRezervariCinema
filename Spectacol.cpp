@@ -9,6 +9,7 @@ Spectacol::Spectacol(int id, Film* film, Sala* sala, string data, string ora, fl
     this->data = data;
     this->ora = ora;
     this->pret = pret;
+    initializeazaLocuri();
 }
 
 int Spectacol::getId() const { return id; }
@@ -29,4 +30,33 @@ void Spectacol::afisare() const {
     cout << "Data: " << data << endl;
     cout << "Ora: " << ora << endl;
     cout << "Pret: " << pret << " RON" << endl;
+}
+void Spectacol::initializeazaLocuri() {
+    locuriOcupate.assign(sala->getCapacitate(), false);
+}
+
+bool Spectacol::esteLocLiber(int index) const {
+    if (index < 0 || index >= locuriOcupate.size()) return false;
+    return !locuriOcupate[index];
+}
+
+void Spectacol::ocupaLoc(int index) {
+    if (index >= 0 && index < locuriOcupate.size())
+        locuriOcupate[index] = true;
+}
+
+void Spectacol::elibereazaLoc(int index) {
+    if (index >= 0 && index < locuriOcupate.size())
+        locuriOcupate[index] = false;
+}
+
+vector<bool>& Spectacol::getLocuriOcupate() {
+    return locuriOcupate;
+}
+
+int Spectacol::getLocuriLibere() const {
+    int libere = 0;
+    for (bool b : locuriOcupate)
+        if (!b) libere++;
+    return libere;
 }
